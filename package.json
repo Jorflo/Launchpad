@@ -1,0 +1,16 @@
+{
+  "name": "h1launcher",
+  "version": "0.0.1",
+  "description": "Replacement launcher for H1Z1/Just Survive",
+  "main": "launcher.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jørgen Flo",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.2.0",
+    "h1z1-server": "^0.6.6",
+    "selenium-webdriver": "^4.0.0-alpha.7"
+  }
+}
