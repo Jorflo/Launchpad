@@ -11,7 +11,6 @@ const filepath = 'F:\\JS\\depots\\295111\\3052008 - Copy\\';
 const GET_SESSION = 'get_play_session'
 let fingerprint = '';
 
-const H1Z1servers = require("h1z1-server");
 
 init();
 
@@ -37,14 +36,26 @@ async function loginBrowser() {
     let response = await driver.findElement(By.css('pre')).getText();
     response = JSON.parse(response);
 
+    let cookies = await driver.manage().getCookies();
+    let session;
+
+    for(let arg of response.launchArgs.split(' ')) {
+        if(arg.includes('sessionid')) {
+            session = arg.split('=').slice(1).toString()
+        }
+    }
+
+
     let args = '';
     args = args += response.launchArgs
     args = args.replace('LaunchPad:Ufp={fingerprint}', 'LaunchPad:Ufp=' + fingerprint)
-    args = args.replace('LaunchPad:SessionId=0', 'LaunchPad:SessionId=' + timestamp) // Timestamp or Sessionid?
+    args = args.replace('LaunchPad:SessionId=0', 'LaunchPad:SessionId=' + session) // Timestamp or Sessionid?
     args = args.split(' ')
 
+    let fileData = args.concat(response.launchArgs.split(' '))
+    fs.writeFile('arguments.json', JSON.stringify(fileData), () => {});
+    fs.writeFile('cookies.json', JSON.stringify(cookies), () => {});
 
-    console.log(args)
     // Launch the game
     exec(exeFile, args, { cwd: filepath }, (err, data) => {
         if (err) console.log(err);
